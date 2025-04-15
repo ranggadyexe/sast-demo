@@ -1,14 +1,26 @@
-steps:
-  - name: Checkout code
-    uses: actions/checkout@v3
+name: Bandit GitHub Action
 
-  - name: Set up Python
-    uses: actions/setup-python@v5
-    with:
-      python-version: '3.10'
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
 
-  - name: Install Bandit
-    run: pip install bandit
+jobs:
+  bandit:
+    runs-on: ubuntu-latest
 
-  - name: Run Bandit
-    run: bandit -r .
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install Bandit
+        run: pip install bandit
+
+      - name: Run Bandit scan
+        run: bandit -r .
