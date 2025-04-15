@@ -1,31 +1,14 @@
-name: Python SAST with Bandit
+steps:
+  - name: Checkout code
+    uses: actions/checkout@v3
 
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+  - name: Set up Python
+    uses: actions/setup-python@v5
+    with:
+      python-version: '3.10'
 
-jobs:
-  bandit-scan:
-    runs-on: ubuntu-latest
+  - name: Install Bandit
+    run: pip install bandit
 
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v3
-
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.x'
-
-      - name: Install Bandit
-        run: pip install bandit
-
-      - name: Run Bandit scan
-        run: bandit -r . -f html -o bandit-report.html
-
-      - name: Upload Bandit report
-        with:
-          name: bandit-report
-          path: bandit-report.html
+  - name: Run Bandit
+    run: bandit -r .
